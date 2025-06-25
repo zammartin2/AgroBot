@@ -1,0 +1,33 @@
+[Unit]
+Description=AgroBot Core Service
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/robot/AgroBot/linux/agrobot_core.py
+WorkingDirectory=/home/robot/AgroBot/linux
+Restart=always
+User=robot
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
+
+
+# Копируем в systemd
+sudo cp agrobot.service /etc/systemd/system/
+
+# Обновляем systemd
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+
+# Включаем автозапуск
+sudo systemctl enable agrobot
+
+# Запускаем
+sudo systemctl start agrobot
+
+# Проверяем логи
+journalctl -u agrobot -f
+
+
+
